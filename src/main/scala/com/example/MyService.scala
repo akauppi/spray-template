@@ -17,7 +17,16 @@ class MyServiceActor extends Actor with MyService {
 
 trait MyService extends HttpService {
 
-  val myRoute =
+  val myRoute = slashRoute
+
+  // Note: the initialization order of Scala object/trait fields is undefined. We use 'lazy' to avoid null pointers.
+
+  private
+  lazy val slashRoute = (path("") & get) {
+    complete{ "Bohoo" }
+  }
+
+  /*** disabled
     path("") {
       get {
         respondWithMediaType(`text/html`) { // XML is marshalled to `text/xml` by default, so we simply override here
@@ -31,4 +40,5 @@ trait MyService extends HttpService {
         }
       }
     }
+  ***/
 }
